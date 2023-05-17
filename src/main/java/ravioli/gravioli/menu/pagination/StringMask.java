@@ -10,7 +10,7 @@ public class StringMask implements Mask {
     private final String originalMaskString;
     private final int[] validSlots;
 
-    private StringMask(@NotNull final String maskString) {
+    public StringMask(@NotNull final String maskString) {
         this.originalMaskString = maskString;
         this.validSlots = this.findValidSlots(maskString);
     }
