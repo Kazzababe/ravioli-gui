@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ravioli.gravioli.menu.component.input.ItemFilter;
 import ravioli.gravioli.menu.component.input.UpdateAction;
+import ravioli.gravioli.menu.mask.Mask;
 import ravioli.gravioli.menu.renderer.MenuRenderer;
 
 import java.util.function.Consumer;
@@ -41,6 +42,10 @@ public interface MenuComponent {
 
     static @NotNull UserInputComponent userInput() {
         return userInput((itemStack) -> true);
+    }
+
+    static @NotNull FilledMaskComponent filledMask(@NotNull final Mask mask, @NotNull final ItemStack itemStack) {
+        return new FilledMaskComponent(mask, itemStack);
     }
 
     void queue(@NotNull MenuRenderer renderer, int slot);

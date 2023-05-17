@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import ravioli.gravioli.menu.component.ImplicitMenuComponent;
 import ravioli.gravioli.menu.component.MenuComponent;
 import ravioli.gravioli.menu.handler.MenuHandler;
-import ravioli.gravioli.menu.pagination.Mask;
+import ravioli.gravioli.menu.mask.Mask;
 import ravioli.gravioli.menu.property.MenuProperty;
 import ravioli.gravioli.menu.provider.MenuProvider;
 import ravioli.gravioli.menu.renderer.MenuRenderer;

@@ -1,4 +1,4 @@
-package ravioli.gravioli.menu.pagination;
+package ravioli.gravioli.menu.mask;
 
 import com.google.common.primitives.Ints;
 import org.jetbrains.annotations.NotNull;
