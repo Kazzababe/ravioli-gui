@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import ravioli.gravioli.menu.component.ImplicitMenuComponent;
 import ravioli.gravioli.menu.component.MenuComponent;
 import ravioli.gravioli.menu.handler.MenuHandler;
+import ravioli.gravioli.menu.pagination.Mask;
 import ravioli.gravioli.menu.property.MenuProperty;
 import ravioli.gravioli.menu.provider.MenuProvider;
 import ravioli.gravioli.menu.renderer.MenuRenderer;
@@ -79,61 +80,5 @@ public class PaginationMenuProvider implements MenuProvider, ImplicitMenuCompone
 
     public boolean hasPrevious() {
         return this.page.get() > 0;
-    }
-
-    public static class Mask implements Iterable<Integer> {
-        public static @NotNull Mask fromString(@NotNull final String maskString) {
-            final String[] lines = maskString.split(" ");
-            final List<Integer> slots = new ArrayList<>();
-
-            for (int y = 0, slot = 0; y < lines.length; y++) {
-                final String line = lines[y];
-
-                for (int x = 0; x < 9; x++, slot++) {
-                    if (x >= line.length()) {
-                        continue;
-                    }
-                    final String lineChar = String.valueOf(line.charAt(x));
-                    final Integer lineBit = Ints.tryParse(lineChar);
-
-                    if (lineBit == null || (lineBit != 0 && lineBit != 1)) {
-                        continue;
-                    }
-                    if (lineBit == 1) {
-                        slots.add(slot);
-                    }
-                }
-            }
-            return new Mask(Ints.toArray(slots));
-        }
-
-        private final int[] validSlots;
-
-        private Mask(final int[] validSlots) {
-            this.validSlots = validSlots;
-        }
-
-        public int getSize() {
-            return this.validSlots.length;
-        }
-
-        @Override
-        public @NotNull Iterator<Integer> iterator() {
-            return new MaskIterator();
-        }
-
-        private class MaskIterator implements Iterator<Integer> {
-            private int index;
-
-            @Override
-            public boolean hasNext() {
-                return this.index < validSlots.length;
-            }
-
-            @Override
-            public Integer next() {
-                return validSlots[this.index++];
-            }
-        }
     }
 }

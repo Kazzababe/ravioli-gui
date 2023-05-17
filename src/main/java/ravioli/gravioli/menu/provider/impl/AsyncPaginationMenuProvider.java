@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import ravioli.gravioli.menu.component.ImplicitMenuComponent;
 import ravioli.gravioli.menu.component.MenuComponent;
 import ravioli.gravioli.menu.handler.MenuHandler;
+import ravioli.gravioli.menu.pagination.Mask;
 import ravioli.gravioli.menu.property.MenuProperty;
 import ravioli.gravioli.menu.provider.MenuProvider;
 import ravioli.gravioli.menu.renderer.MenuRenderer;
@@ -20,7 +21,7 @@ import java.util.function.Function;
 public class AsyncPaginationMenuProvider implements MenuProvider, ImplicitMenuComponent {
     private static final Logger LOGGER = LoggerFactory.getLogger(AsyncPaginationMenuProvider.class);
 
-    private final PaginationMenuProvider.Mask mask;
+    private final Mask mask;
     private final Function<Integer, CompletableFuture<PageData>> loadFunction;
 
     private MenuProperty<Integer> page;
@@ -28,7 +29,7 @@ public class AsyncPaginationMenuProvider implements MenuProvider, ImplicitMenuCo
     private MenuProperty<List<MenuComponent>> items;
     private transient boolean processing;
 
-    public AsyncPaginationMenuProvider(@NotNull final PaginationMenuProvider.Mask mask,
+    public AsyncPaginationMenuProvider(@NotNull final Mask mask,
                                        @NotNull final PageProvider loadFunction) {
         this.mask = mask;
         this.loadFunction = (page) -> CompletableFuture.supplyAsync(() -> loadFunction.load(page))
