@@ -111,7 +111,7 @@ public class SimpleMenuRenderer extends PacketAdapter implements MenuRenderer {
         if (windowId != container.containerId) {
             return;
         }
---
+
         final List<ItemStack> itemStacks = packet.getItemListModifier().read(0);
         final int inventorySize = this.inventory.getSize();
         final int totalSize = this.renderBoundary.getTotalSize(this.inventory);
