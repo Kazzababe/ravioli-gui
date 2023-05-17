@@ -8,7 +8,7 @@ import ravioli.gravioli.menu.renderer.MenuRenderer;
 
 import java.util.function.Consumer;
 
-class ItemMenuComponent implements MenuComponent {
+public class ItemMenuComponent implements MenuComponent {
     private final ItemStack itemStack;
     private final Consumer<InventoryClickEvent> clickEventConsumer;
 

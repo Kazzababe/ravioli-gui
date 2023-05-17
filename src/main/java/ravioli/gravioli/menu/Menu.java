@@ -75,6 +75,8 @@ public abstract class Menu implements MenuHandler, InventoryHolder, Listener {
             this.render();
 
             Bukkit.getPluginManager().registerEvents(this, this.plugin);
+
+            this.onOpen();
         });
     }
 
@@ -319,6 +321,8 @@ public abstract class Menu implements MenuHandler, InventoryHolder, Listener {
     public final @NotNull Plugin plugin() {
         return this.plugin;
     }
+
+    protected void onOpen() {}
 
     protected void onClose(@NotNull final InventoryCloseEvent.Reason closeReason) { }
 
