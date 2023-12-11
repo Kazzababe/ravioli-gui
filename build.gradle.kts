@@ -8,7 +8,7 @@ plugins {
 group = "ravioli.gravioli"
 version = "1.0-SNAPSHOT"
 
-val paperVersion = "1.19.3-R0.1-SNAPSHOT"
+val paperVersion = "1.20.2-R0.1-SNAPSHOT"
 
 repositories {
     mavenCentral()

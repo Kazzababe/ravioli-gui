@@ -8,6 +8,7 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import org.bukkit.Bukkit;
@@ -372,27 +373,10 @@ public class SimpleMenuRenderer extends PacketAdapter implements MenuRenderer {
         this.renderLock.lock();
 
         try {
-            if (!Objects.equals(this.menu.properties().title(), this.previousTitle)) {
-                final Inventory newInventory = this.createInventory();
+            final Component title = this.menu.properties().title();
 
-                for (int i = 0; i < this.inventory.getSize(); i++) {
-                    final ItemStack itemStack = this.inventory.getItem(i);
-
-                    if (itemStack == null || itemStack.getType().isAir()) {
-                        continue;
-                    }
-                    newInventory.setItem(i, itemStack);
-                }
-                final List<HumanEntity> viewers = new ArrayList<>(this.visibleInventory.getViewers());
-
-                this.visibleInventory = newInventory;
-                this.previousTitle = this.menu.properties().title();
-
-                Bukkit.getScheduler().getMainThreadExecutor(this.plugin).execute(() -> {
-                    for (final HumanEntity viewer : viewers) {
-                        viewer.openInventory(this.visibleInventory);
-                    }
-                });
+            if (!Objects.equals(title, this.previousTitle)) {
+                this.updateTitle(title);
             }
         } finally {
             this.renderLock.unlock();
@@ -496,6 +480,39 @@ public class SimpleMenuRenderer extends PacketAdapter implements MenuRenderer {
         final PersistentDataContainer container = itemMeta.getPersistentDataContainer();
 
         return container.has(INDICATOR_KEY, PersistentDataType.STRING);
+    }
+
+    private void updateTitle(@Nullable final Component title) {
+        try {
+            this.menu.getPlayer()
+                .getOpenInventory()
+                .setTitle(
+                    Optional.ofNullable(title)
+                        .map(validTitle -> LegacyComponentSerializer.legacySection().serialize(validTitle))
+                        .orElse("")
+                );
+        } catch (final Exception e) {
+            final Inventory newInventory = this.createInventory();
+
+            for (int i = 0; i < this.inventory.getSize(); i++) {
+                final ItemStack itemStack = this.inventory.getItem(i);
+
+                if (itemStack == null || itemStack.getType().isAir()) {
+                    continue;
+                }
+                newInventory.setItem(i, itemStack);
+            }
+            final List<HumanEntity> viewers = new ArrayList<>(this.visibleInventory.getViewers());
+
+            this.visibleInventory = newInventory;
+            this.previousTitle = this.menu.properties().title();
+
+            Bukkit.getScheduler().getMainThreadExecutor(this.plugin).execute(() -> {
+                for (final HumanEntity viewer : viewers) {
+                    viewer.openInventory(this.visibleInventory);
+                }
+            });
+        }
     }
 
     private enum InventoryClickType {
