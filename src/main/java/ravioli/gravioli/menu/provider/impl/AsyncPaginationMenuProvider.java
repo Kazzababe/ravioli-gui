@@ -77,17 +77,23 @@ public class AsyncPaginationMenuProvider implements MenuProvider, ImplicitMenuCo
     }
 
     public void resetPage() {
-        this._refresh(0);
+        this._refresh(0, true);
     }
 
     public void refresh() {
-        this._refresh(this.page.get());
+        this.refresh(true);
     }
 
-    private void _refresh(final int page) {
-        this.processing = true;
-        this.items.set(Collections.emptyList());
+    public void refresh(final boolean clear) {
+        this._refresh(this.page.get(), clear);
+    }
 
+    private void _refresh(final int page, final boolean clear) {
+        this.processing = true;
+
+        if (clear) {
+        this.items.set(Collections.emptyList());
+}
         this.loadFunction
                 .apply(page)
                 .thenAccept((pageData) -> {
