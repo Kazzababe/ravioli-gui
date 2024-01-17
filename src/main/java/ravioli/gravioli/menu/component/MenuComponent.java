@@ -9,6 +9,7 @@ import ravioli.gravioli.menu.component.input.UpdateAction;
 import ravioli.gravioli.menu.mask.Mask;
 import ravioli.gravioli.menu.renderer.MenuRenderer;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 public interface MenuComponent {
@@ -46,6 +47,10 @@ public interface MenuComponent {
 
     static @NotNull FilledMaskComponent filledMask(@NotNull final Mask mask, @NotNull final ItemStack itemStack) {
         return new FilledMaskComponent(mask, itemStack);
+    }
+
+    static @NotNull GridComponent grid(@NotNull final Mask mask, @NotNull final List<MenuComponent> contents) {
+        return new GridComponent(mask, contents);
     }
 
     void queue(@NotNull MenuRenderer renderer, int slot);

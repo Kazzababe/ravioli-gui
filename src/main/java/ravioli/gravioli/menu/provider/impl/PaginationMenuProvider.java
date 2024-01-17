@@ -10,7 +10,6 @@ import ravioli.gravioli.menu.provider.MenuProvider;
 import ravioli.gravioli.menu.renderer.MenuRenderer;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class PaginationMenuProvider implements MenuProvider, ImplicitMenuComponent {
@@ -25,21 +24,15 @@ public class PaginationMenuProvider implements MenuProvider, ImplicitMenuCompone
 
     @Override
     public void queue(@NotNull final MenuRenderer renderer) {
-        final Iterator<Integer> slotIterator = this.mask.iterator();
         final List<MenuComponent> pageComponents = this.items.get()
             .stream()
             .skip((long) this.page.get() * this.mask.getSize())
             .limit(this.mask.getSize())
             .toList();
 
-        for (final MenuComponent item : pageComponents) {
-            if (!slotIterator.hasNext()) {
-                break;
-            }
-            final int slot = slotIterator.next();
-
-            renderer.queue(slot, item);
-        }
+        renderer.queue(MenuComponent.grid(
+            this.mask, pageComponents
+        ));
     }
 
     @Override

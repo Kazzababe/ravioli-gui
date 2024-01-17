@@ -13,7 +13,6 @@ import ravioli.gravioli.menu.renderer.MenuRenderer;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
@@ -42,17 +41,11 @@ public class AsyncPaginationMenuProvider implements MenuProvider, ImplicitMenuCo
 
     @Override
     public void queue(@NotNull final MenuRenderer renderer) {
-        final Iterator<Integer> slotIterator = this.mask.iterator();
         final List<MenuComponent> pageComponents = this.items.get();
 
-        for (final MenuComponent item : pageComponents) {
-            if (!slotIterator.hasNext()) {
-                break;
-            }
-            final int slot = slotIterator.next();
-
-            renderer.queue(slot, item);
-        }
+        renderer.queue(MenuComponent.grid(
+            this.mask, pageComponents
+        ));
     }
 
     @Override
