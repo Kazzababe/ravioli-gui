@@ -308,14 +308,16 @@ public abstract class Menu implements MenuHandler, InventoryHolder, Listener {
         if (!inventory.equals(this.getInventory())) {
             return;
         }
+        if (event.getPlayer() instanceof Player) {
+            if (!this.onClose(event.getReason())) {
+                Bukkit.getScheduler().runTaskLater(this.plugin, () -> this.player.openInventory(this.getInventory()), 1);
+
+                return;
+            }
+        }
         HandlerList.unregisterAll(this);
 
         this.menuRenderer.cleanup();
-
-        if (!(event.getPlayer() instanceof Player)) {
-            return;
-        }
-        this.onClose(event.getReason());
     }
 
     public final @NotNull Plugin plugin() {
@@ -324,7 +326,9 @@ public abstract class Menu implements MenuHandler, InventoryHolder, Listener {
 
     protected void onOpen() {}
 
-    protected void onClose(@NotNull final InventoryCloseEvent.Reason closeReason) { }
+    protected boolean onClose(@NotNull final InventoryCloseEvent.Reason closeReason) {
+        return true;
+    }
 
     private void click(@NotNull final InventoryClickEvent event) {
         final int slot = event.getRawSlot();
