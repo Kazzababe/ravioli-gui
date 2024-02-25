@@ -342,16 +342,16 @@ public class SimpleMenuRenderer extends PacketAdapter implements MenuRenderer {
                         final ItemStack currentVisibleItem = this.visibleInventory.getItem(i);
 
                         if (currentVisibleItem == null) {
-                            this.visibleInventory.setItem(i, newItem.clone());
+                            this.visibleInventory.setItem(i, newItem);
                         } else {
                             currentVisibleItem.setItemMeta(itemMeta);
                             currentVisibleItem.setAmount(newItem.getAmount());
                         }
                     }
                 } else if (this.renderType == RenderType.PHYSICAL) {
-                    this.visibleInventory.setItem(i, newItem.clone());
+                    this.visibleInventory.setItem(i, newItem);
                 }
-                this.inventory.setItem(i, newItem.clone());
+                this.inventory.setItem(i, newItem);
             }
             for (final HumanEntity viewer : this.visibleInventory.getViewers()) {
                 if (!(viewer instanceof final Player player)) {

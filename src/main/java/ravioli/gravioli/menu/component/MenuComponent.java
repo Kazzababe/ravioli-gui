@@ -14,12 +14,18 @@ import java.util.function.Consumer;
 
 public interface MenuComponent {
     static @NotNull MenuComponent item(@NotNull final ItemStack itemStack,
+                                       @NotNull final Consumer<InventoryClickEvent> clickEventConsumer,
+                                       final boolean clone) {
+        return new ItemMenuComponent(itemStack, clickEventConsumer, clone);
+    }
+
+    static @NotNull MenuComponent item(@NotNull final ItemStack itemStack,
                                        @NotNull final Consumer<InventoryClickEvent> clickEventConsumer) {
-        return new ItemMenuComponent(itemStack, clickEventConsumer);
+        return new ItemMenuComponent(itemStack, clickEventConsumer, true);
     }
 
     static @NotNull MenuComponent item(@NotNull final ItemStack itemStack) {
-        return new ItemMenuComponent(itemStack, null);
+        return new ItemMenuComponent(itemStack, null, true);
     }
 
     static @NotNull UserInputComponent userInput(@NotNull final ItemFilter itemFilter, final int shiftClickPriority,
